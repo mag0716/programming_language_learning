@@ -2,25 +2,24 @@ fun cutWhileOne(cutHistory: List<List<Int>>, personNumber: Int): List<List<Int>>
     // 末尾取得
     val current = cutHistory[cutHistory.size - 1]
     val barSize = current.size
+    // 人がなるべく余らない様に長い棒から切っていく
+    val sortedCurrent = current.sortedDescending()
     val latest = mutableListOf<Int>()
 
-    if(!isFinish(current)) {
-        var cutCount = 0
-        for (index in 0..barSize-1) {
-            // 1本の棒を一度に切ることができるのは1人まで
-            val bar = current[index]
-            if (cutCount < personNumber) {
-                if (isCuttable(bar)) {
-                    val cutBar = bar / 2
-                    latest.add(cutBar)
-                    latest.add(bar-cutBar)
-                    cutCount++
-                } else {
-                    latest.add(bar)
-                }
+    var cutCount = 0
+    for (index in 0..barSize-1) {
+        val bar = sortedCurrent[index]
+        if (cutCount < personNumber) {
+            if (isCuttable(bar)) {
+                val cutBar = bar / 2
+                latest.add(cutBar)
+                latest.add(bar-cutBar)
+                cutCount++
             } else {
                 latest.add(bar)
             }
+        } else {
+            latest.add(bar)
         }
     }
 

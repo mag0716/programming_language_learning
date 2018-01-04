@@ -39,13 +39,15 @@ class Position(val x : Int, val y : Int) {
         }
     }
 
-    fun countChild() : Int {
+    fun countChild(depth : Int) : Int {
         var count = 0
         for(child in next) {
             if(child.hasChild()) {
-                count += child.countChild()
+                count += child.countChild(depth-1)
             } else {
-                count++
+                if(depth == 1) {
+                    count++
+                }
             }
         }
         return count
@@ -73,4 +75,4 @@ fun searchMovePattern(position : Position, count : Int) {
 
 val position = Position(0, 0)
 searchMovePattern(position, 12)
-println(position.countChild())
+println(position.countChild(12)) // 32493

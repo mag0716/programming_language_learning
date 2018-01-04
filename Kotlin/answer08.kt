@@ -31,8 +31,7 @@ class Position(val x : Int, val y : Int) {
                     nextPosition = Position(x+1, y)
                 }
 
-                // TODO: すでに通ったことのある位置の場合は追加しない
-                if(nextPosition != null) {
+                if(nextPosition != null && newPosition(nextPosition)) {
                     nextPosition.previous = this
                     next.add(nextPosition)
                 }
@@ -50,6 +49,14 @@ class Position(val x : Int, val y : Int) {
             }
         }
         return count
+    }
+
+    fun newPosition(position : Position) : Boolean {
+        if(previous != null) {
+            return (previous!!.x != position.x || previous!!.y != position.y)
+                    && previous!!.newPosition(position)
+        }
+        return true
     }
 }
 

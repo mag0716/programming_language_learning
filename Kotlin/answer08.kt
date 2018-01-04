@@ -75,4 +75,4 @@ fun searchMovePattern(position : Position, count : Int) {
 
 val position = Position(0, 0)
 searchMovePattern(position, 12)
-println(position.countChild(12)) // 32493
+println(position.countChild(12)) // 324932

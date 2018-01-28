@@ -29,12 +29,9 @@ fun searchMaxSum(style : List<Int>, count : Int) : Int {
 
 fun searchMaxSum(style : List<Int>, count : Int, startIndex : Int) : Int {
     if(count > 0) {
-        // FIXME: startIndex から count 分だけ取り出す処理をもっとシンプルにしたい
-        val list = style.stream()
-                .skip(startIndex.toLong())
-                .toArray()
+        val list = style
+                .drop(startIndex)
                 .take(count)
-                .map { it as Int }
         return list.sum() + searchMaxSum(style, count-list.size, 0)
     }
     return 0

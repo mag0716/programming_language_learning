@@ -4,6 +4,17 @@ fun main(args: Array<String>) {
 
     val invalidCalculation = MaskCalculation(1111111111)
     println("${invalidCalculation.valid()} : ${invalidCalculation.leftSide()} = ${invalidCalculation.rightSide()}")
+
+    for(value in 1234056789..9876543210) {
+        try {
+            val calc = MaskCalculation(value)
+            if(calc.valid() && calc.leftSide() == calc.rightSide()) {
+                println(calc.toString())
+            }
+        } catch(e : IllegalArgumentException) {
+        }
+    }
+    println("end")
 }
 
 /**
@@ -62,5 +73,9 @@ class MaskCalculation(val value: Long) {
                 .toCharArray()
                 .distinct()
                 .count() == 10
+    }
+
+    override fun toString(): String {
+        return "$R$E$A$D + $W$R$I$T$E+ $T$A$L$K = $S$K$I$L$L"
     }
 }

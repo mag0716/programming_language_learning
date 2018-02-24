@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.Mutable
-
 private val all_countries = listOf(
         "BRAZIL",
         "CAMEROON",
@@ -36,8 +34,6 @@ private val all_countries = listOf(
 )
 
 fun main(args: Array<String>) {
-    println("Hello Answer14")
-
 //    // expect: NETHERLANDS, NIGERIA
 //    println(filterContinuableWord("JAPAN", mutableListOf()))
 //    // expect: SPAIN, SWITZERLAND
@@ -48,9 +44,17 @@ fun main(args: Array<String>) {
 //    println(filterContinuableWord("X", mutableListOf()))
 
     // expect: JAPAN -> NETHERLANDS -> SWITZERLAND
-    println(wordGame(mutableListOf(), mutableListOf("JAPAN")))
-}
+//    val results = mutableListOf<List<String>>()
+//    wordGame(results, mutableListOf("JAPAN"))
+//    println(results)
 
+    val results = mutableListOf<List<String>>()
+    for(startCountry in all_countries) {
+        wordGame(results, listOf(startCountry))
+    }
+    val longestResult = results.maxBy { it -> it.size }
+    println("longest word game results = $longestResult")
+}
 
 fun String.lastWord() : String = this[this.lastIndex].toString()
 
@@ -60,20 +64,19 @@ fun filterContinuableWord(prevWord: String, words: List<String>) : List<String> 
     }
 }
 
-fun wordGame(results: MutableList<List<String>>, words: List<String>) : MutableList<List<String>> {
+fun wordGame(results: MutableList<List<String>>, words: List<String>) {
     val previousWord = words[words.lastIndex]
     val continuableWords = filterContinuableWord(previousWord, words)
     if(continuableWords.isNotEmpty()) {
         for (nextWord in continuableWords) {
             val tmp = mutableListOf<String>().apply {
                 addAll(words)
+                add(nextWord)
             }
-            tmp.add(nextWord)
             wordGame(results, tmp)
         }
     } else {
         // しりとりできなくなったら結果に追加
         results.add(words)
     }
-    return results
 }

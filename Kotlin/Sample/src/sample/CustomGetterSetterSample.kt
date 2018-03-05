@@ -1,5 +1,7 @@
 package sample
 
+import kotlin.concurrent.timer
+
 fun main(args: Array<String>) {
     val sample1 = Sample1()
     println(sample1.title)
@@ -17,6 +19,11 @@ fun main(args: Array<String>) {
     println(sample3.title)
     sample3.title = ""
     println(sample3.title)
+
+    val sample4 = Sample4("sample4")
+    println(sample4.message)
+    sample4.message = ""
+    println(sample4.message)
 }
 
 /**
@@ -42,6 +49,19 @@ class Sample2 {
  */
 class Sample3 {
     var title = "unddefine"
+        set(value) {
+            if(value.isNotEmpty()) {
+                field = value
+            }
+        }
+}
+
+/**
+ * カスタムセッター
+ * コンストラクタで渡したパラメータを利用して初期化し、その後はカスタムセッターでバリデーションする
+ */
+class Sample4(title: String) {
+    var message : String = title.toUpperCase()
         set(value) {
             if(value.isNotEmpty()) {
                 field = value

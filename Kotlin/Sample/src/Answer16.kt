@@ -20,17 +20,40 @@ fun main(args: Array<String>) {
     // expect: 1*8 * 2*8 = 5*5
     println(searchMatchRectanglePattern(20))
 
-    println(searchMatchRectanglePattern().size)
+    // expect: true
+    println(
+            RectanglePattern(Rectangle(1, 9), Rectangle(2, 8), Rectangle(5, 5)).isSampRatio(
+                    RectanglePattern(Rectangle(2, 18), Rectangle(4, 16), Rectangle(10, 10))))
+    // expect: true
+    println(hasSameRatioPattern(listOf(RectanglePattern(Rectangle(1, 9), Rectangle(2, 8), Rectangle(5, 5))),
+            RectanglePattern(Rectangle(2, 18), Rectangle(4, 16), Rectangle(10, 10))))
+
+    val allMatchRectanglePattern = searchMatchRectanglePattern()
+    println(allMatchRectanglePattern.size)
 }
 
 fun searchMatchRectanglePattern() : List<RectanglePattern> {
-    val pattern = mutableListOf<RectanglePattern>()
+    val patternList = mutableListOf<RectanglePattern>()
 
     for(length in 1..500) {
-        pattern.addAll(searchMatchRectanglePattern(length))
+        for(pattern in searchMatchRectanglePattern(length)) {
+            if(hasSameRatioPattern(patternList, pattern).not()) {
+               patternList.add(pattern)
+            }
+        }
     }
 
-    return pattern
+    return patternList
+}
+
+fun hasSameRatioPattern(patternList: List<RectanglePattern>, pattern: RectanglePattern) : Boolean {
+    // RectanglePattern の equals を実装して、distinct で重複削除しようと思ったが、Kotlin の distinct は Set に add することで重複をなくしている
+    for(src in patternList) {
+        if(src.isSampRatio(pattern)) {
+            return true
+        }
+    }
+    return false
 }
 
 fun searchMatchRectanglePattern(length: Int) : List<RectanglePattern> {
@@ -82,4 +105,14 @@ data class Rectangle(val width: Int, val height: Int) {
 
 data class RectanglePattern(val rect1: Rectangle, val rect2: Rectangle, val square: Rectangle) {
     fun match() = rect1.area() + rect2.area() == square.area()
+
+    fun isSampRatio(other: RectanglePattern) : Boolean {
+            if(other.rect1.area() % rect1.area() == 0) {
+                val ratio = other.rect1.area() / rect1.area()
+                //println("ratio = $ratio, ${rect2.area() * ratio} == ${other.rect2.area()}, ${square.area() * ratio} == ${other.square.area()}")
+                return rect2.area() * ratio == other.rect2.area() &&
+                        square.area() * ratio == other.square.area()
+            }
+        return false
+    }
 }

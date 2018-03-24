@@ -11,6 +11,9 @@ fun main(args: Array<String>) {
     val allPattern = calculatePattern(4)
     println(allPattern)
     println(filterContinuousGirl(allPattern))
+
+    // Answer
+    println(filterContinuousGirl(calculatePattern(30)).size)
 }
 
 fun calculatePattern(numberOfPeople : Int) : List<List<String>> {

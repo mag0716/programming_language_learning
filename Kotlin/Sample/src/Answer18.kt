@@ -1,23 +1,23 @@
 fun main(args: Array<String>) {
     println("Hello Answer18")
 
-//    // expect : 24通り
-//    println(generateCutPattern(4).size)
-//
-//    // expect : [4, 9]
-//    println(generateSqrtPattern(4))
-//    // expect : []
-//    println(generateSqrtPattern(2))
-//
-//    // expect : true
-//    println(isSqrt(4, listOf(4, 9)))
-//    // expect : false
-//    println(isSqrt(5, listOf(4, 9)))
-//
-//    // expect : true
-//    println(isAllSqrt(listOf(1, 3, 1, 3), listOf(4)))
-//    // expect : false
-//    println(isAllSqrt(listOf(1, 2, 3, 4), listOf(4)))
+    // expect : 6通り
+    println(generateCutPattern(4).size)
+
+    // expect : [4, 9]
+    println(generateSqrtPattern(4))
+    // expect : []
+    println(generateSqrtPattern(2))
+
+    // expect : true
+    println(isSqrt(4, listOf(4, 9)))
+    // expect : false
+    println(isSqrt(5, listOf(4, 9)))
+
+    // expect : true
+    println(isAllSqrt(listOf(1, 3, 1, 3), listOf(4)))
+    // expect : false
+    println(isAllSqrt(listOf(1, 2, 3, 6), listOf(4, 9)))
 
     var count = 2
     loop@ while(true)  {
@@ -25,10 +25,13 @@ fun main(args: Array<String>) {
         val sqrtPattern = generateSqrtPattern(count)
         println("$count -> ${allCutPattern.size}")
         for(cutPattern in allCutPattern) {
-            if(isAllSqrt(cutPattern, sqrtPattern)) {
+            val pattern = mutableListOf(1)
+            pattern.addAll(cutPattern)
+            if(isAllSqrt(pattern, sqrtPattern)) {
                 break@loop
             }
         }
+        println("checked $count")
         count++
     }
     println("all sqrt cut pattern : $count")
@@ -36,7 +39,9 @@ fun main(args: Array<String>) {
 
 fun generateCutPattern(count : Int) : List<List<Int>> {
     val strawberryPattern = mutableListOf<Int>()
-    for(strawberry in count downTo 1) {
+    // 今回は隣り合うケーキのいちごの数の和が欲しいので、全てのパターンを求める必要はないので
+    // いちごの数が1つは index が 0 固定として扱う
+    for(strawberry in 2..count) {
         strawberryPattern.add(strawberry)
     }
 

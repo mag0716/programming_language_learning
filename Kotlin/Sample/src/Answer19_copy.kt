@@ -19,7 +19,27 @@ fun main(args: Array<String>) {
     // answer
     // 素数を小さい順番から掛ければ条件を満たす合成数が求められる
     // [ 4, 6, 15, 35, 77, 143, 169]
-    println(primeNumbers[primeNumbers.lastIndex] * primeNumbers[primeNumbers.lastIndex])
+    // ただしこれは最小の数ではないので、最小の数を求めるため素数の順番を並び替えて求める
+    var min = primeNumbers[primeNumbers.lastIndex] * primeNumbers[primeNumbers.lastIndex]
+    val primePatterns = primeNumbers.permutation()
+    for(primePattern in primePatterns) {
+        val friends = mutableListOf<Int>()
+        for(index in 0..primePattern.size) {
+            if(index == 0) {
+                friends.add(primePattern[0] * primePattern[0])
+            } else if(index == primePattern.size) {
+                friends.add(primePattern[primePattern.lastIndex] * primePattern[primePattern.lastIndex])
+            } else {
+                friends.add(primePattern[index-1] * primePattern[index])
+            }
+        }
+        val maxFriend = friends.max() ?: 0
+        if(min > maxFriend) {
+            min = maxFriend
+            println("min update : $min $friends")
+        }
+    }
+    println("answer = $min")
 }
 
 fun Int.isPrime() : Boolean {

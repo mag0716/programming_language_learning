@@ -1,6 +1,6 @@
 fun main(args: Array<String>) {
     println("Hello Sample20")
-    
+
     val list1 = sumPattern(1)
     // expect: 16
     println("$list1 : ${list1.size}")
@@ -26,7 +26,8 @@ fun main(args: Array<String>) {
     println("answer = $max : $count")
 }
 
-val magicTeam = setOf(1, 14, 14, 4, 11, 7, 6, 9, 8, 10, 10, 5, 13, 2, 3, 15)
+val magicTeamIndex = setOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+val magicTeam = listOf(1, 14, 14, 4, 11, 7, 6, 9, 8, 10, 10, 5, 13, 2, 3, 15)
 
 fun allSumPattern(list: MutableList<Int>) {
     for(size in 1..magicTeam.size) {
@@ -36,9 +37,9 @@ fun allSumPattern(list: MutableList<Int>) {
 
 fun sumPattern(size: Int) : List<Int> {
     val list = mutableListOf<Int>()
-    val combinations = magicTeam.combinations(size)
+    val combinations = magicTeamIndex.combinations(size)
     for (combination in combinations) {
-        list.add(combination.sum())
+        list.add(combination.map { magicTeam[it] }.sum())
     }
     return list
 }
